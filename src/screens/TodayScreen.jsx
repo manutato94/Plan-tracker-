@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Icon } from '../components/Icon.jsx';
 import { ProgressRing, exByName } from '../components/common.jsx';
-import { MEAL_DEFS, OFFPLAN_SCALE, DESSERT_SCALE, MEALS_WITH_DESSERT, DAY_NAMES } from '../data/plan.js';
+import { MEAL_DEFS, OFFPLAN_SCALE, offScaleFor, DESSERT_SCALE, MEALS_WITH_DESSERT, DAY_NAMES } from '../data/plan.js';
 import { todayISO, isoToDate, dowMon0, addDays, analyzeWeekdays, weekendInsight } from '../lib/helpers.js';
 
 export function TodayScreen({ dateISO, setDateISO, day, updateDay, state, goGuide }) {
@@ -21,7 +21,7 @@ export function TodayScreen({ dateISO, setDateISO, day, updateDay, state, goGuid
     else if (status === "yes") meals[key] = { status: "yes", ...(prevDessert != null ? { dessert: prevDessert } : {}) };
     else {
       const prev = meals[key] && meals[key].status === "no" ? meals[key] : {};
-      meals[key] = { status: "no", severity: prev.severity ?? 2, note: prev.note ?? "", ...(prevDessert != null ? { dessert: prevDessert } : {}) };
+      meals[key] = { status: "no", severity: prev.severity ?? 1, note: prev.note ?? "", ...(prevDessert != null ? { dessert: prevDessert } : {}) };
     }
     updateDay({ ...day, meals });
   };
@@ -171,23 +171,27 @@ export function TodayScreen({ dateISO, setDateISO, day, updateDay, state, goGuid
               </div>
             </div>
 
-            {status === "no" && (
+            {status === "no" && (() => {
+              const scale = offScaleFor(m.key);
+              const sev = Math.min(st.severity ?? 0, scale.length - 1);
+              return (
               <div className="offplan-detail">
                 <div className="lbl">¿Qué tan off?</div>
                 <div className="sev-value">
-                  <span className="name">{OFFPLAN_SCALE[st.severity].label}</span>
-                  <span className="kcal">+{OFFPLAN_SCALE[st.severity].kcal} kcal</span>
+                  <span className="name">{scale[sev].label}</span>
+                  <span className="kcal">+{scale[sev].kcal} kcal</span>
                 </div>
-                <div className="t-meta" style={{ fontSize: 12 }}>{OFFPLAN_SCALE[st.severity].example}</div>
-                <input className="slider" type="range" min="0" max={OFFPLAN_SCALE.length - 1} step="1"
-                  value={st.severity} onChange={(e) => setSeverity(m.key, parseInt(e.target.value))} />
+                <div className="t-meta" style={{ fontSize: 12 }}>{scale[sev].example}</div>
+                <input className="slider" type="range" min="0" max={scale.length - 1} step="1"
+                  value={sev} onChange={(e) => setSeverity(m.key, parseInt(e.target.value))} />
                 <div className="slider-scale">
                   <span>Menos peor</span><span>Peor</span>
                 </div>
                 <textarea className="note-input" rows="2" placeholder="¿Qué comiste? (ej: 3 porciones de pizza + cerveza)"
                   value={st.note || ""} onChange={(e) => setNote(m.key, e.target.value)} />
               </div>
-            )}
+              );
+            })()}
 
             {/* Postre — solo almuerzo y cena, independiente del status */}
             {MEALS_WITH_DESSERT.includes(m.key) && (() => {

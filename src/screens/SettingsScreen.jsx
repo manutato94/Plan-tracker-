@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Icon } from '../components/Icon.jsx';
 import { exByName } from '../components/common.jsx';
-import { MEAL_DEFS, OFFPLAN_SCALE, DESSERT_SCALE, DAY_SHORT, DAY_NAMES } from '../data/plan.js';
+import { MEAL_DEFS, OFFPLAN_SCALE, offScaleFor, DESSERT_SCALE, DAY_SHORT, DAY_NAMES } from '../data/plan.js';
 import { todayISO, isoToDate, AVG_PLANNED_KCAL } from '../lib/helpers.js';
 
 export function SettingsScreen({ state, setState }) {
@@ -33,7 +33,7 @@ export function SettingsScreen({ state, setState }) {
         if (st.status) {
           totalMeals++;
           if (st.status === "yes") onPlan++;
-          else if (st.status === "no") { off++; extraKcal += OFFPLAN_SCALE[st.severity]?.kcal || 0; if (st.note) offNotes.push(`${iso} ${m.label}: ${st.note} (${OFFPLAN_SCALE[st.severity]?.label})`); }
+          else if (st.status === "no") { off++; const sc = offScaleFor(m.key); extraKcal += sc[st.severity]?.kcal || 0; if (st.note) offNotes.push(`${iso} ${m.label}: ${st.note} (${sc[st.severity]?.label})`); }
         }
         // postre en plan (fruta/dátiles, nivel 1): suma a kcal totales, NO es transgresión
         if (st.dessert === 1) {

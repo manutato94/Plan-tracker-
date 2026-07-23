@@ -1,5 +1,5 @@
 // Helpers de fecha, estado y analytics
-import { MEAL_DEFS, OFFPLAN_SCALE, DESSERT_SCALE, MEALS_WITH_DESSERT } from '../data/plan.js';
+import { MEAL_DEFS, OFFPLAN_SCALE, OFFPLAN_SCALE_LIGHT, offScaleFor, DESSERT_SCALE, MEALS_WITH_DESSERT } from '../data/plan.js';
 
 export const todayISO = () => {
   const d = new Date(); d.setHours(0,0,0,0);
@@ -43,7 +43,7 @@ export function dayExtraKcal(d) {
   let extra = 0;
   MEAL_DEFS.forEach(m => {
     const st = d.meals[m.key];
-    if (st?.status === "no" && st.severity != null) extra += OFFPLAN_SCALE[st.severity]?.kcal || 0;
+    if (st?.status === "no" && st.severity != null) extra += offScaleFor(m.key)[st.severity]?.kcal || 0;
     if (st?.dessert != null && st.dessert >= 2) extra += DESSERT_SCALE[st.dessert]?.kcal || 0;
   });
   return extra;

@@ -7,7 +7,7 @@ export const MEAL_DEFS = [
   { key: "dinner",    label: "Cena",     time: "21–22",   icon: "moon" },
 ];
 
-// Off-plan severity scale (slider) — kcal is the *extra* over a planned meal (~550 avg)
+// Off-plan severity — almuerzo y cena (comidas fuertes). kcal = extra sobre lo planeado
 export const OFFPLAN_SCALE = [
   { label: "Fruta/snack de más",      example: "Fruta extra, barrita, puñado de frutos secos", kcal: 120 },
   { label: "Picoteo moderado",         example: "Tostadas, queso, un alfajor", kcal: 300 },
@@ -15,6 +15,20 @@ export const OFFPLAN_SCALE = [
   { label: "Comida rápida",            example: "Hamburguesa completa, 3–4 porciones de pizza", kcal: 900 },
   { label: "Atracón / salida",         example: "Empanadas + pizza + postre, asado libre, cerveza", kcal: 1300 },
 ];
+
+// Off-plan severity — desayuno y merienda (comidas livianas)
+export const OFFPLAN_SCALE_LIGHT = [
+  { label: "Fruta/snack de más",       example: "Fruta extra, barrita, puñado de frutos secos", kcal: 120 },
+  { label: "Picoteo moderado",         example: "Tostadas, queso, un alfajor", kcal: 300 },
+  { label: "2 chipás",                 example: "Dos chipás", kcal: 300 },
+  { label: "2 fetas de budín",         example: "Dos fetas de budín", kcal: 340 },
+  { label: "2 medialunas",             example: "Dos medialunas", kcal: 400 },
+  { label: "2 sanguchitos de miga",    example: "Dos sanguchitos de miga (4 mitades)", kcal: 440 },
+];
+
+// Devuelve la escala off según la comida
+export const offScaleFor = (mealKey) =>
+  (mealKey === "breakfast" || mealKey === "snack") ? OFFPLAN_SCALE_LIGHT : OFFPLAN_SCALE;
 
 // Dessert scale — solo almuerzo/cena. 0=no comí, 1=en plan, 2+=transgresión
 export const DESSERT_SCALE = [

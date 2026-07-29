@@ -50,6 +50,7 @@ input, select, textarea { font-family: inherit; font-size: 16px; }
   margin: 0 auto;
   box-shadow: 0 0 0 1px var(--line);
   overflow: hidden;
+  padding-top: env(safe-area-inset-top);
 }
 @media (min-width: 720px) {
   body { padding: 24px 0; background: #1a1a1a; }
@@ -57,6 +58,7 @@ input, select, textarea { font-family: inherit; font-size: 16px; }
     height: calc(100vh - 48px);
     max-height: 920px;
     border-radius: 16px;
+    padding-top: 0;
   }
 }
 
@@ -419,15 +421,15 @@ input, select, textarea { font-family: inherit; font-size: 16px; }
 .sheet {
   background: var(--bg); width: 100%;
   border-top-left-radius: 16px; border-top-right-radius: 16px;
-  padding: 8px 20px 24px; max-height: 86%;
+  padding: 8px 20px calc(24px + env(safe-area-inset-bottom)); max-height: 80%;
   display: flex; flex-direction: column; animation: slideup .2s ease;
 }
 @keyframes slideup { from { transform: translateY(20px); opacity: 0.4 } to { transform: translateY(0); opacity: 1 } }
-.sheet-handle { width: 40px; height: 4px; background: var(--line-2); border-radius: 2px; margin: 8px auto 12px; }
-.sheet-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-.sheet-meta { color: var(--ink-2); font-size: 14px; margin-bottom: 16px; }
-.sheet-body { overflow-y: auto; flex: 1; padding-bottom: 8px; }
-.sheet-actions { display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--line); }
+.sheet-handle { width: 40px; height: 4px; background: var(--line-2); border-radius: 2px; margin: 8px auto 12px; flex-shrink: 0; }
+.sheet-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; flex-shrink: 0; }
+.sheet-meta { color: var(--ink-2); font-size: 14px; margin-bottom: 16px; flex-shrink: 0; }
+.sheet-body { overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 8px; }
+.sheet-actions { display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--line); flex-shrink: 0; }
 
 /* Buttons */
 .btn {

@@ -2,28 +2,27 @@
 // Meals shown on Today (fixed daily structure)
 export const MEAL_DEFS = [
   { key: "breakfast", label: "Desayuno", time: "8–10 AM", icon: "sun" },
-  { key: "lunch",     label: "Almuerzo", time: "13–14",   icon: "bowl" },
-  { key: "snack",     label: "Merienda", time: "17–18",   icon: "leaf" },
-  { key: "dinner",    label: "Cena",     time: "21–22",   icon: "moon" },
+  { key: "lunch",     label: "Almuerzo", time: "1–2 PM",  icon: "bowl" },
+  { key: "snack",     label: "Merienda", time: "5–6 PM",  icon: "toast" },
+  { key: "dinner",    label: "Cena",     time: "9–10 PM", icon: "moon" },
 ];
 
 // Off-plan severity — almuerzo y cena (comidas fuertes). kcal = extra sobre lo planeado
 export const OFFPLAN_SCALE = [
-  { label: "Fruta/snack de más",      example: "Fruta extra, barrita, puñado de frutos secos", kcal: 120 },
-  { label: "Picoteo moderado",         example: "Tostadas, queso, un alfajor", kcal: 300 },
-  { label: "Plato casero libre",       example: "Pastas rellenas, milanesa con puré, tarta", kcal: 550 },
-  { label: "Comida rápida",            example: "Hamburguesa completa, 3–4 porciones de pizza", kcal: 900 },
-  { label: "Atracón / salida",         example: "Empanadas + pizza + postre, asado libre, cerveza", kcal: 1300 },
+  { label: "Se fue un poco de la línea", example: "Pastas caseras, milanesa con puré, o algo más abundante que el plan", kcal: 250 },
+  { label: "Comida fuera del plan",      example: "2-3 empanadas, porción de pizza casera, sándwich de milanesa, ñoquis con salsa", kcal: 500 },
+  { label: "Salida / comida pesada",     example: "Hamburguesa completa con papas, 3-4 porciones de pizza, milanesa napolitana", kcal: 800 },
+  { label: "Atracón / salida grande",    example: "Asado libre con achuras y postre, picada con cerveza, restaurante completo, delivery grande", kcal: 1200 },
 ];
 
 // Off-plan severity — desayuno y merienda (comidas livianas)
 export const OFFPLAN_SCALE_LIGHT = [
   { label: "Fruta/snack de más",       example: "Fruta extra, barrita, puñado de frutos secos", kcal: 120 },
-  { label: "Picoteo moderado",         example: "Tostadas, queso, un alfajor", kcal: 300 },
+  { label: "1 factura o galletitas",   example: "Una medialuna sola, o 2-3 galletitas dulces", kcal: 150 },
   { label: "2 chipás",                 example: "Dos chipás", kcal: 300 },
-  { label: "2 fetas de budín",         example: "Dos fetas de budín", kcal: 340 },
+  { label: "2 fetas de budín",         example: "Dos fetas de budín o una porción chica de torta simple", kcal: 340 },
   { label: "2 medialunas",             example: "Dos medialunas", kcal: 400 },
-  { label: "2 sanguchitos de miga",    example: "Dos sanguchitos de miga (4 mitades)", kcal: 440 },
+  { label: "2 sanguchitos de miga",    example: "Dos sanguchitos de miga (4 mitades) o un triple con algo dulce", kcal: 440 },
 ];
 
 // Devuelve la escala off según la comida

@@ -131,6 +131,80 @@ export function TodayScreen({ dateISO, setDateISO, day, updateDay, state, goGuid
 
       <div className="spacer-24" />
 
+      {/* WORKOUT — primero, antes de comidas y sueño */}
+      <div className="row between" style={{ marginBottom: 10 }}>
+        <div className="h-section">Entrenamiento</div>
+        <div className="t-meta t-mono">{logged.length} hecho{logged.length === 1 ? "" : "s"}</div>
+      </div>
+
+      {(() => {
+        // extras = registrados que no están en el plan del día
+        const extras = logged.filter(n => !planned.includes(n));
+        const hasContent = planned.length > 0 || extras.length > 0;
+        return (
+          <div className={"plan-card" + (hasContent ? "" : " rest")}>
+            {planned.length > 0 ? (
+              <>
+                <div className="plan-eyebrow"><Icon name="dumbbell" size={12} /> Planeado hoy</div>
+                {planned.map((name) => {
+                  const ex = exByName(state.exercises, name);
+                  const done = logged.includes(name);
+                  return (
+                    <div key={name} className="ex-row">
+                      <div className={"ex-icon-tile" + (done ? " done" : "")}><Icon name={ex.icon} size={24} /></div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div className="ex-name">{ex.name}</div>
+                        <div className="ex-sub">{done ? "Registrado" : "Tocá para registrar"}</div>
+                      </div>
+                      <button className={"pill-btn " + (done ? "active-yes" : "")} onClick={() => toggleEx(name)}>
+                        {done ? <><Icon name="check" size={15} /> Hecho</> : "Log"}
+                      </button>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              <div className="plan-eyebrow"><Icon name="rest" size={12} /> Sin plan hoy — registrá lo que hagas</div>
+            )}
+
+            {/* Extras registrados fuera del plan */}
+            {extras.length > 0 && (
+              <>
+                <div className="plan-eyebrow" style={{ marginTop: planned.length ? 14 : 0, paddingTop: planned.length ? 14 : 0, borderTop: planned.length ? "1px solid var(--line)" : "none" }}>
+                  <Icon name="plus" size={12} /> Actividad extra
+                </div>
+                {extras.map((name) => {
+                  const ex = exByName(state.exercises, name);
+                  return (
+                    <div key={name} className="ex-row">
+                      <div className="ex-icon-tile done"><Icon name={ex.icon} size={24} /></div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div className="ex-name">{ex.name}</div>
+                        <div className="ex-sub">Registrado (fuera del plan)</div>
+                      </div>
+                      <button className="pill-btn active-yes" onClick={() => toggleEx(name)}>
+                        <Icon name="check" size={15} /> Hecho
+                      </button>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+
+            {planned.length > 0 && !allPlannedDone && (
+              <button className="btn accent" style={{ marginTop: 14 }} onClick={markAllPlanned}>
+                <Icon name="check" size={18} /> Marcar plan como hecho
+              </button>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* Add / log any activity, even off-plan */}
+      <ExtraExercises state={state} logged={logged} toggleEx={toggleEx} />
+
+      <div className="spacer-32" />
+
       {/* SLEEP */}
       <div className="h-section" style={{ marginBottom: 10 }}>Sueño</div>
       <div className={"card sleep-card" + ((day.sleep ?? 0) >= 8 ? " hit" : "")}>
@@ -218,79 +292,6 @@ export function TodayScreen({ dateISO, setDateISO, day, updateDay, state, goGuid
         );
       })}
 
-      <div className="spacer-32" />
-
-      {/* WORKOUT */}
-      <div className="row between" style={{ marginBottom: 10 }}>
-        <div className="h-section">Entrenamiento</div>
-        <div className="t-meta t-mono">{logged.length} hecho{logged.length === 1 ? "" : "s"}</div>
-      </div>
-
-      {(() => {
-        // extras = registrados que no están en el plan del día
-        const extras = logged.filter(n => !planned.includes(n));
-        const hasContent = planned.length > 0 || extras.length > 0;
-        return (
-          <div className={"plan-card" + (hasContent ? "" : " rest")}>
-            {planned.length > 0 ? (
-              <>
-                <div className="plan-eyebrow"><Icon name="dumbbell" size={12} /> Planeado hoy</div>
-                {planned.map((name) => {
-                  const ex = exByName(state.exercises, name);
-                  const done = logged.includes(name);
-                  return (
-                    <div key={name} className="ex-row">
-                      <div className={"ex-icon-tile" + (done ? " done" : "")}><Icon name={ex.icon} size={24} /></div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div className="ex-name">{ex.name}</div>
-                        <div className="ex-sub">{done ? "Registrado" : "Tocá para registrar"}</div>
-                      </div>
-                      <button className={"pill-btn " + (done ? "active-yes" : "")} onClick={() => toggleEx(name)}>
-                        {done ? <><Icon name="check" size={15} /> Hecho</> : "Log"}
-                      </button>
-                    </div>
-                  );
-                })}
-              </>
-            ) : (
-              <div className="plan-eyebrow"><Icon name="rest" size={12} /> Sin plan hoy — registrá lo que hagas</div>
-            )}
-
-            {/* Extras registrados fuera del plan */}
-            {extras.length > 0 && (
-              <>
-                <div className="plan-eyebrow" style={{ marginTop: planned.length ? 14 : 0, paddingTop: planned.length ? 14 : 0, borderTop: planned.length ? "1px solid var(--line)" : "none" }}>
-                  <Icon name="plus" size={12} /> Actividad extra
-                </div>
-                {extras.map((name) => {
-                  const ex = exByName(state.exercises, name);
-                  return (
-                    <div key={name} className="ex-row">
-                      <div className="ex-icon-tile done"><Icon name={ex.icon} size={24} /></div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div className="ex-name">{ex.name}</div>
-                        <div className="ex-sub">Registrado (fuera del plan)</div>
-                      </div>
-                      <button className="pill-btn active-yes" onClick={() => toggleEx(name)}>
-                        <Icon name="check" size={15} /> Hecho
-                      </button>
-                    </div>
-                  );
-                })}
-              </>
-            )}
-
-            {planned.length > 0 && !allPlannedDone && (
-              <button className="btn accent" style={{ marginTop: 14 }} onClick={markAllPlanned}>
-                <Icon name="check" size={18} /> Marcar plan como hecho
-              </button>
-            )}
-          </div>
-        );
-      })()}
-
-      {/* Add / log any activity, even off-plan */}
-      <ExtraExercises state={state} logged={logged} toggleEx={toggleEx} />
       </>
       )}
     </div>

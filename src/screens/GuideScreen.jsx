@@ -28,7 +28,7 @@ export function GuideScreen({ backToToday }) {
           ))}
         </div>
         <div className="nutri-meal">
-          <div className="mt"><Icon name="leaf" size={14} /> Merienda <span className="mkcal">~{GUIDE_FIXED.snack.kcal} kcal</span></div>
+          <div className="mt"><Icon name="toast" size={14} /> Merienda <span className="mkcal">~{GUIDE_FIXED.snack.kcal} kcal</span></div>
           {GUIDE_FIXED.snack.options.map((o, i) => (
             <div key={i}><div className="opt-label">Opción {i+1}</div><div className="t-body" style={{ fontSize: 14 }}>{o}</div></div>
           ))}

@@ -6,6 +6,7 @@ const FA = {
   chevL: "fa-chevron-left", chevR: "fa-chevron-right", back: "fa-chevron-right",
   spark: "fa-wand-magic-sparkles", flame: "fa-fire-flame-curved",
   sun: "fa-mug-hot", bowl: "fa-bowl-food", leaf: "fa-apple-whole", moon: "fa-moon",
+  toast: "fa-bread-slice",
   sleep: "fa-bed",
   run: "fa-person-running", walk: "fa-person-walking", bike: "fa-person-biking",
   dumbbell: "fa-dumbbell", core: "fa-person", yoga: "fa-spa",
